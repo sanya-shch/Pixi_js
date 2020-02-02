@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Realistic Water Ripple Effect</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="pixi.min.js"></script>
+
+    <script>
+        let app, displacementSprite;
+
+        function initPixi() {
+            app = new PIXI.Application({width: window.innerWidth, height: window.innerHeight});
+            document.body.appendChild(app.view);
+
+            const image = new PIXI.Sprite.from("water1.jpg");
+            image.width = window.innerWidth;
+            image.height = window.innerHeight;
+            app.stage.addChild(image);
+
+            displacementSprite = new PIXI.Sprite.from("cloud.jpg");
+            const displacementFilter = new PIXI.filters.DisplacementFilter(displacementSprite);
+            displacementSprite.texture.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+            app.stage.addChild(displacementSprite);
+            app.stage.filters = [displacementFilter];
+
+            app.renderer.view.style.transform = 'scale(1.02)';
+            displacementSprite.scale.x = 4;
+            displacementSprite.scale.y = 4;
+
+            animate();
+        }
+
+        function animate() {
+            displacementSprite.x +=8;
+            displacementSprite.y +=3;
+
+            requestAnimationFrame(animate)
+        }
+
+        initPixi()
+    </script>
+</body>
+</html>
