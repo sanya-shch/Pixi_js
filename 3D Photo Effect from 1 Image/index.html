@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Photo Effect from 1 Image</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="pixi.min.js"></script>
+
+    <script>
+        let app = new PIXI.Application({width: window.innerWidth, height: window.innerHeight});
+        document.body.appendChild(app.view);
+
+        const image = new PIXI.Sprite.from("ray-hennessy-nI4OwVnz0dw-unsplash.jpg");
+        image.width = window.innerWidth;
+        image.height = window.innerHeight;
+        app.stage.addChild(image);
+
+        depthMap = new PIXI.Sprite.from("depthMap.jpg");
+        depthMap.width = window.innerWidth;
+        depthMap.height = window.innerHeight;
+        app.stage.addChild(depthMap);
+
+        const displacementFilter = new PIXI.filters.DisplacementFilter(depthMap);
+        app.stage.filters = [displacementFilter];
+
+        window.onmousemove = function (e) {
+            displacementFilter.scale.x = (window.innerWidth / 2 - e.clientX) / 20;
+            displacementFilter.scale.y = (window.innerHeight / 2 - e.clientY) / 20;
+        }
+    </script>
+</body>
+</html>
